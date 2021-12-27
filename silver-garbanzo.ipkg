@@ -6,7 +6,8 @@ sourcedir = "src"
 
 opts = "--codegen javascript"
 
-modules = main
-main = main
+modules = Main
+
+main = Main
 
 executable = "main.js"

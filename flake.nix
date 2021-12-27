@@ -23,41 +23,22 @@
 
         inherit (pkgs.idris2-pkgs._builders) idrisPackage devEnv;
 
-        elab-util = idrisPackage (import ./nix/sources.nix).idris2-elab-util {
-          ipkgFile = "elab-util.ipkg";
-        };
-        sop = idrisPackage (import ./nix/sources.nix).idris2-sop {
-          ipkgFile = "sop.ipkg";
-        };
-        dom = idrisPackage (import ./nix/sources.nix).idris2-dom {
-          ipkgFile = "dom.ipkg";
-          extraPkgs.sop = sop;
-          extraPkgs.elab-util = elab-util;
-        };
+        silver-garbanzo = idrisPackage ./. { };
 
-        silver-garbanzo = idrisPackage ./. {
-          extraPkgs.dom = dom;
+        runTests = idrisPackage ./tests {
+          extraPkgs.silver-garbanzo = silver-garbanzo;
         };
-
-        # runTests = idrisPackage ./tests {
-        #   extraPkgs.silver-garbanzo = silver-garbanzo;
-        # };
 
         project = returnShellEnv:
           pkgs.mkShell {
             packages = with pkgs; [
-              # inherit mypkg
-              # runTests
-              idris2
-              dom
-              sop
-              elab-util
               nixpkgs-fmt
               nodePackages.live-server
               goreman
               entr
               nodejs
               nodePackages.concurrently
+              runTests
             ];
             buildInputs = [
               (devEnv silver-garbanzo)
@@ -66,8 +47,11 @@
       in
       {
         # Used by `nix build` & `nix run` (prod exe)
-        # defaultPackage = project false;
-        defaultPackage = silver-garbanzo;
+        defaultPackage = project false;
+
+        packages = {
+          inherit silver-garbanzo;
+        };
 
         # Used by `nix develop` (dev shell)
         devShell = (project true).overrideAttrs (oa: {
