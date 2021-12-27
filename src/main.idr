@@ -1,5 +1,7 @@
 module Main
 
+import Data.SOP
+
 import JS
 import Web.Dom
 import Web.Html

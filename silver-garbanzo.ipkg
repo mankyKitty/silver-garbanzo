@@ -1,7 +1,7 @@
 package silver-garbanzo
 
 version = 0.1.0
-depends = base, contrib, dom
+depends = base, contrib, dom, sop, elab-util
 sourcedir = "src"
 
 opts = "--codegen javascript"

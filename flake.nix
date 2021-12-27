@@ -1,5 +1,6 @@
 {
   description = "idris-template's description";
+
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
     flake-compat = {
@@ -22,14 +23,24 @@
 
         inherit (pkgs.idris2-pkgs._builders) idrisPackage devEnv;
 
-        idris2-dom = idrisPackage (import ./nix/sources.nix).idris2-dom { };
+        elab-util = idrisPackage (import ./nix/sources.nix).idris2-elab-util {
+          ipkgFile = "elab-util.ipkg";
+        };
+        sop = idrisPackage (import ./nix/sources.nix).idris2-sop {
+          ipkgFile = "sop.ipkg";
+        };
+        dom = idrisPackage (import ./nix/sources.nix).idris2-dom {
+          ipkgFile = "dom.ipkg";
+          extraPkgs.sop = sop;
+          extraPkgs.elab-util = elab-util;
+        };
 
         silver-garbanzo = idrisPackage ./. {
-          extraPkgs.dom = idris2-dom;
+          extraPkgs.dom = dom;
         };
 
         # runTests = idrisPackage ./tests {
-        #   extraPkgs.mypkg = mypkg;
+        #   extraPkgs.silver-garbanzo = silver-garbanzo;
         # };
 
         project = returnShellEnv:
@@ -38,6 +49,9 @@
               # inherit mypkg
               # runTests
               idris2
+              dom
+              sop
+              elab-util
               nixpkgs-fmt
               nodePackages.live-server
               goreman
@@ -52,12 +66,8 @@
       in
       {
         # Used by `nix build` & `nix run` (prod exe)
-        defaultPackage = project false;
-
-        # packages =
-        #   {
-        #     inherit silver-garbanzo;
-        #   };
+        # defaultPackage = project false;
+        defaultPackage = silver-garbanzo;
 
         # Used by `nix develop` (dev shell)
         devShell = (project true).overrideAttrs (oa: {

@@ -11,6 +11,30 @@
         "url": "https://github.com/stefan-hoeck/idris2-dom/archive/b36df5d590cd65640d8d32ebc63f7f6997c61938.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "idris2-elab-util": {
+        "branch": "main",
+        "description": "Utilities and documentation for exploring idirs2's new elaborator reflection.",
+        "homepage": null,
+        "owner": "stefan-hoeck",
+        "repo": "idris2-elab-util",
+        "rev": "7a381c7c5dc3adb7b97c8b8be17e4fb4cc63027d",
+        "sha256": "1cqg9hbc3ciiz6c80kf2kvpzm4lrb69r7nllbk1j85lz33znrb9b",
+        "type": "tarball",
+        "url": "https://github.com/stefan-hoeck/idris2-elab-util/archive/7a381c7c5dc3adb7b97c8b8be17e4fb4cc63027d.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "idris2-sop": {
+        "branch": "main",
+        "description": "Idris port of Haskell's sop-core library",
+        "homepage": null,
+        "owner": "stefan-hoeck",
+        "repo": "idris2-sop",
+        "rev": "e4354d1883cd73616019457cb9ebf864d99df6a0",
+        "sha256": "1h4dddwmq9gdw74acb854qhqhaiy2pxbmq6cb8i2h4vsdkaxyd1w",
+        "type": "tarball",
+        "url": "https://github.com/stefan-hoeck/idris2-sop/archive/e4354d1883cd73616019457cb9ebf864d99df6a0.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "niv": {
         "branch": "master",
         "description": "Easy dependency management for Nix projects",
