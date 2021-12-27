@@ -22,42 +22,42 @@
 
         inherit (pkgs.idris2-pkgs._builders) idrisPackage devEnv;
 
-        idrisPkgs =
-          if system == "aarch64-darwin"
-          then import nixpkgs { system = "x86_64-darwin"; }  # Rosetta only, no M1 build available
-          else pkgs;
-
-        mypkg = idrisPackage ./. { }; # this package
-        runTests = idrisPackage ./tests {
-          extraPkgs.mypkg = mypkg;
-        };
+        silver-garbanzo = idrisPackage ./. { }; # this package
+        # runTests = idrisPackage ./tests {
+        #   extraPkgs.mypkg = mypkg;
+        # };
 
         project = returnShellEnv:
           pkgs.mkShell {
+            packages = with pkgs; [
+              # inherit mypkg
+              # runTests
+              idris2
+              nixpkgs-fmt
+              nodePackages.live-server
+              goreman
+              entr
+              nodejs
+              nodePackages.concurrently
+            ];
             buildInputs = [
-              (devEnv mypkg)
+              (devEnv silver-garbanzo)
             ];
           };
       in
       {
-        packages = with pkgs; [
-          mypkg
-          runTests
-          idrisPkgs.idris2
-          nixpkgs-fmt
-          nodePackages.live-server
-          goreman
-          entr
-          nodejs
-          nodePackages.concurrently
-        ];
         # Used by `nix build` & `nix run` (prod exe)
         defaultPackage = project false;
+
+        # packages =
+        #   {
+        #     inherit silver-garbanzo;
+        #   };
 
         # Used by `nix develop` (dev shell)
         devShell = (project true).overrideAttrs (oa: {
           shellHook = oa.shellHook + ''
-            export DYLD_LIBRARY_PATH=${idrisPkgs.idris2}/lib:$DYLD_LIBRARY_PATH
+            export DYLD_LIBRARY_PATH=${pkgs.idris2}/lib:$DYLD_LIBRARY_PATH
           '';
         });
       });
