@@ -22,7 +22,12 @@
 
         inherit (pkgs.idris2-pkgs._builders) idrisPackage devEnv;
 
-        silver-garbanzo = idrisPackage ./. { }; # this package
+        idris2-dom = idrisPackage (import ./nix/sources.nix).idris2-dom { };
+
+        silver-garbanzo = idrisPackage ./. {
+          extraPkgs.dom = idris2-dom;
+        };
+
         # runTests = idrisPackage ./tests {
         #   extraPkgs.mypkg = mypkg;
         # };

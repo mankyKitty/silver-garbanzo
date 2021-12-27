@@ -1,9 +1,12 @@
 package silver-garbanzo
 
 version = 0.1.0
-depends = base, contrib
+depends = base, contrib, dom
 sourcedir = "src"
-modules = Main
+
+opts = "--codegen javascript"
+
+modules = main
 main = main
 
-executable = silverg
+executable = "main.js"

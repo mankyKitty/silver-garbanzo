@@ -1,5 +1,9 @@
 module Main
 
+import JS
+import Web.Dom
+import Web.Html
+
 %foreign "browser:lambda:x=>{document.body.innerHTML = x}"
 prim__setBodyInnerHTML : String -> PrimIO ()
 
@@ -13,8 +17,13 @@ consoleLog : HasIO io => String -> io ()
 consoleLog x = primIO $ prim__consoleLog x
 
 main : IO ()
-main = do 
-  consoleLog "Hello from Idris!"
+main = do
+  consoleLog "Hello from Idris2!"
   let n = S (S (S Z))
   consoleLog $ show n
   setBodyInnerHtml $ "<i>This part is written by main.idr.</i> " ++ "<p><tt>" ++ show n ++ "</tt><p>"
+  setBodyInnerHtml $ "<i>This next part is written using Idris2-dom:</i> " ++ "<p><tt>" ++ show n ++ "</tt><p>"
+  runJS $ do
+    btn <- createElement Button
+    textContent btn .= "omg!"
+    pure ()
